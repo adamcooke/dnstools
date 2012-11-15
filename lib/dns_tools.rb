@@ -9,4 +9,4 @@ module DNSTools
   
 end
 
-require 'dns_tools/serial_check'
+require 'dns_tools/ns_check'

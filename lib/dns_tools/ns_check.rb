@@ -1,9 +1,9 @@
 module DNSTools
   class Commands
     
-    desc "serialcheck example.com", "Checks the serial number for all a domain's nameservers is the same on all records"
-    def serialcheck(domain)
-      root_resolver = Resolv::DNS.new(:nameserver => ['8.8.8.8'])
+    desc "nscheck example.com", "Checks the NS records for a domain and ensures they all return the same data"
+    def nscheck(domain)
+      root_resolver = Resolv::DNS.new(:nameserver => ['8.8.8.8', '141.1.1.1', '8.8.4.4'])
 
       nameservers = root_resolver.getresources(domain, Resolv::DNS::Resource::IN::NS)
       serials = []
@@ -15,11 +15,14 @@ module DNSTools
 
         soa = ns_resolver.getresource(domain, Resolv::DNS::Resource::IN::SOA)
         if soa
-          puts "OK (#{soa.serial})"
+          ip = root_resolver.getresource(ns.name.to_s, Resolv::DNS::Resource::IN::ANY)
+          print ip.address.to_s.ljust(25)
+          print soa.serial
           serials << soa.serial
         else
           puts "No SOA record found"
         end
+        puts
         $stdout.flush
       end
 
