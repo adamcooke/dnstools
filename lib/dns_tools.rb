@@ -2,7 +2,7 @@ require 'thor'
 require 'resolv'
 
 module DNSTools
-  VERSION = '1.0.3'
+  VERSION = '1.0.4'
   
   class Commands < Thor
   end
